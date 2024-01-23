@@ -1,13 +1,26 @@
-import './App.scss'
-import { Button } from '@nextui-org/react'
+import './App.module.scss'
+import KanbanCard from './components/KanbanCard.tsx'
+import styles from './App.module.scss'
 
-function App() {
+const App = () => {
 
   return (
     <>
-      <Button color="danger" size="lg">
-        Danger
-      </Button>
+      <div className={styles.kanbanWrapper}>
+        <ul className={styles.kanbanList}>
+          <li><KanbanCard /></li>
+          <li><KanbanCard /></li>
+          <li><KanbanCard /></li>
+          <li><KanbanCard /></li>
+        </ul>
+
+        <ul className={styles.kanbanList}>
+          <li><KanbanCard /></li>
+          <li><KanbanCard /></li>
+          <li><KanbanCard /></li>
+          <li><KanbanCard /></li>
+        </ul>
+      </div>
     </>
   )
 }

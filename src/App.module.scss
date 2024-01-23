@@ -1,0 +1,27 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+:local(.kanbanWrapper) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:local(.kanbanWrapper) ul:not(:first-of-type){
+  margin-left: 30px;
+}
+
+:local(.kanbanList) {
+  padding: 20px;
+  background-color: #0f111a;
+  border-radius: 20px;
+  border: #4d5151 2px solid;
+}
+
+:local(.kanbanList) li:not(:first-of-type) {
+  margin-top: 20px;
+}
