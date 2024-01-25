@@ -1,4 +1,5 @@
-import classNames from 'classnames'
+import cn from 'classnames'
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 
 import KanbanCard from './components/KanbanCard.tsx'
 
@@ -8,15 +9,15 @@ const App = () => {
 
   return (
     <>
-      <div className={classNames(styles.kanbanWrapper)}>
-        <ul className={classNames(styles.kanbanList)}>
+      <div className={cn(styles.kanbanWrapper)}>
+        <ul className={cn(styles.kanbanList)}>
           <li><KanbanCard /></li>
           <li><KanbanCard /></li>
           <li><KanbanCard /></li>
           <li><KanbanCard /></li>
         </ul>
 
-        <ul className={classNames(styles.kanbanList)}>
+        <ul className={cn(styles.kanbanList)}>
           <li><KanbanCard /></li>
           <li><KanbanCard /></li>
           <li><KanbanCard /></li>
