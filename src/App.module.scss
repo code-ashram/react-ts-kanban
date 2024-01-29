@@ -10,7 +10,7 @@
   justify-content: center;
 }
 
-:local(.kanbanWrapper) ul:not(:first-of-type){
+:local(.kanbanWrapper) div:not(:first-of-type){
   margin-left: 30px;
 }
 
@@ -23,4 +23,9 @@
 
 :local(.kanbanList) li:not(:first-of-type) {
   margin-top: 20px;
+}
+
+:local(.columnTitle) {
+  font-size: 20px;
+  text-align: center;
 }

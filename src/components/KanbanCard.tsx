@@ -29,12 +29,23 @@ const KanbanCard: FC<Props> = ({ id, index, todo }) => {
               />
               <div className="flex flex-col">
                 <p className="text-md">{todo.title}</p>
-                <p className="text-small text-default-500">{todo.creationTime}</p>
+                <p className="text-small text-default-500">
+                  {new Date(todo.creationTime).toLocaleString(
+                    'en-US',
+                    {
+                      day: '2-digit',
+                      month: 'long',
+                      year: 'numeric',
+                      hour: 'numeric',
+                      minute: 'numeric'
+                    }
+                  )}
+                </p>
               </div>
             </CardHeader>
             <Divider />
             <CardBody>
-              <p>{todo.priority}</p>
+              <p>Priority: {todo.priority}</p>
             </CardBody>
             <Divider />
             <CardFooter>
