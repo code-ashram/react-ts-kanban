@@ -9,9 +9,6 @@ const client = axios.create({
   baseURL: BASE_URL
 })
 
-// export const getTodos = async (): Promise<Todo[]> =>
-//   client.get<Todo[]>('/todos')
-//     .then((response) => response.data)
 export const getTodos = async (status: Status): Promise<Todo[]> =>
   client.get<Todo[]>(`/todos?status=${status}&_sort=order&_start=0&_limit=10`)
     .then((response) => response.data)
