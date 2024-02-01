@@ -3,12 +3,12 @@ import cn from 'classnames'
 import { DragDropContext, DropResult } from 'react-beautiful-dnd'
 import { useQueries, UseQueryOptions } from '@tanstack/react-query'
 
-import { compareColumns } from './utils'
+import KanbanColumn from './components/KanbanColumn'
+
 import { getTodos } from './api'
 import { initialColumns, Status } from './constants'
 import { Column, Todo } from './models'
-
-import KanbanColumn from './components/KanbanColumn.tsx'
+import { compareColumns } from './utils'
 
 import styles from './App.module.scss'
 
@@ -24,12 +24,10 @@ const App = () => {
         })),
       combine: (results) => ({
         data: results.map(result => result.data),
-        isLoading: results.some(result => result.isPending)
+        isLoading: results.some(result => result.isLoading)
       })
     }
   )
-
-  console.log(isLoading)
 
   useEffect(() => {
     if (data.every((list) => Array.isArray(list)))
@@ -42,8 +40,8 @@ const App = () => {
   const onDragEnd = (result: DropResult): void => {
     if (Number.isFinite(result.destination?.index))
       setColumns((prevColumns) => {
-        const sourceColumn = prevColumns.find((column) => column.id === result.source.droppableId)
-        const destinationColumn = prevColumns.find((column) => column.id === result.destination?.droppableId)
+        const sourceColumn = prevColumns.find((column) => column.id === Number(result.source.droppableId))
+        const destinationColumn = prevColumns.find((column) => column.id === Number(result.destination?.droppableId))
         // PATCH
         if (sourceColumn && destinationColumn) {
           const [element] = sourceColumn.todos.splice(result.source.index, 1)
