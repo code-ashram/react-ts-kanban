@@ -1,7 +1,11 @@
-import { Card, CardHeader, CardBody, CardFooter, Divider, Link, Image } from '@nextui-org/react'
-import { Draggable } from 'react-beautiful-dnd'
 import { FC } from 'react'
+import { Card, CardHeader, CardBody, CardFooter, Divider, Link, Image } from '@nextui-org/react'
+import cn from 'classnames'
+import { Draggable } from 'react-beautiful-dnd'
+
 import { Todo } from '../models'
+
+import styles from '../App.module.scss'
 
 type Props = {
   id: string
@@ -15,6 +19,7 @@ const KanbanCard: FC<Props> = ({ id, index, todo }) => {
       {(provided) => (
         <li
           ref={provided.innerRef}
+          className={cn(styles.listItem)}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
@@ -61,7 +66,6 @@ const KanbanCard: FC<Props> = ({ id, index, todo }) => {
         </li>
       )}
     </Draggable>
-
   )
 }
 

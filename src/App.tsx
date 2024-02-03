@@ -6,14 +6,14 @@ import { useQueries, UseQueryOptions } from '@tanstack/react-query'
 import KanbanColumn from './components/KanbanColumn'
 
 import { getTodos } from './api'
-import { initialColumns, Status } from './constants'
+import { InitialColumns, Status } from './constants'
 import { Column, Todo } from './models'
 import { compareColumns } from './utils'
 
 import styles from './App.module.scss'
 
 const App = () => {
-  const [columns, setColumns] = useState<Column[]>(initialColumns)
+  const [columns, setColumns] = useState<Column[]>(InitialColumns)
   const { data, isLoading } = useQueries(
     {
       queries: Object.entries(Status)
@@ -58,7 +58,7 @@ const App = () => {
     <DragDropContext onDragEnd={onDragEnd}>
       <div className={cn(styles.kanbanWrapper)}>
         {columns.map((column) => (
-          <KanbanColumn key={column.id} column={column} />
+          <KanbanColumn key={column.id} column={column} isLoading={isLoading}/>
         ))}
       </div>
     </DragDropContext>

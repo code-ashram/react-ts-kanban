@@ -10,8 +10,8 @@
   justify-content: center;
 }
 
-:local(.kanbanWrapper) div:not(:first-of-type){
-  margin-left: 30px;
+:local(.kanbanColumn):not(:first-of-type) {
+  margin-left: 20px;
 }
 
 :local(.kanbanList) {
@@ -28,4 +28,8 @@
 :local(.columnTitle) {
   font-size: 20px;
   text-align: center;
+}
+
+:local(.listItem) {
+  width: 312px;
 }
