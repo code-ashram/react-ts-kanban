@@ -7,7 +7,8 @@ import KanbanCard from './KanbanCard.tsx'
 import { Column } from '../models'
 
 import styles from '../App.module.scss'
-import SkeletonCard from './UI/SkeletonCard.tsx'
+import SkeletonCard from './SkeletonCard.tsx'
+import KanbanButton from './UI/KanbanButton.tsx'
 
 type Props = {
   column: Column
@@ -30,6 +31,8 @@ const KanbanColumn: FC<Props> = ({ column, isLoading }) => (
 
             {provided.placeholder}
           </ul>
+
+          <KanbanButton>Load More</KanbanButton>
         </div>
       )}
     </Droppable>

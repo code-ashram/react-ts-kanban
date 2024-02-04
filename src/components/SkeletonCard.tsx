@@ -2,7 +2,7 @@ import { Card, CardBody, CardFooter, CardHeader, Divider, Image, Link, Skeleton 
 import { FC } from 'react'
 import cn from 'classnames'
 
-import styles from '../../App.module.scss'
+import styles from '../App.module.scss'
 
 const SkeletonCard: FC = () => (
   <li className={cn(styles.listItem)}>
