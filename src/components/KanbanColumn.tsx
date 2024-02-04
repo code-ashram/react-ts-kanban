@@ -25,7 +25,7 @@ const KanbanColumn: FC<Props> = ({ column, isLoading }) => (
               ? column.todos.map((todo, index) => (
                 <KanbanCard key={todo.id} id={todo.id} index={index} todo={todo} />
               ))
-              : new Array(6).fill(null).map((_, index) => <SkeletonCard key={index} />)
+              : new Array(3).fill(null).map((_, index) => <SkeletonCard key={index} />)
             }
 
             {provided.placeholder}

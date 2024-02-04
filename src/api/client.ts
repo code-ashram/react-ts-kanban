@@ -10,7 +10,7 @@ const client = axios.create({
 })
 
 export const getTodos = async (status: Status): Promise<Todo[]> =>
-  client.get<Todo[]>(`/todos?status=${status}&_sort=order&_start=0&_limit=10`)
+  client.get<Todo[]>(`/todos?status=${status}&_sort=order&_start=0&_limit=3`)
     .then((response) => response.data)
 
 export const getTodo = async (id: string): Promise<Todo> =>
