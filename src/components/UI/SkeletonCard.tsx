@@ -8,7 +8,7 @@ const SkeletonCard: FC = () => (
   <li className={cn(styles.listItem)}>
     <Card className="max-w-[400px]">
       <CardHeader className="flex gap-3">
-        <Skeleton>
+        <Skeleton className={cn(styles.skeletonImg)}>
           <Image
             alt="nextui logo"
             height={40}
@@ -18,23 +18,23 @@ const SkeletonCard: FC = () => (
           />
         </Skeleton>
         <div className="flex flex-col">
-          <Skeleton>
+          <Skeleton className={cn(styles.skeletonTitle)}>
             <p className="text-md">NextUI</p>
           </Skeleton>
-          <Skeleton>
+          <Skeleton className={cn(styles.skeletonSubtitle)}>
             <p className="text-small text-default-500">nextui.org</p>
           </Skeleton>
         </div>
       </CardHeader>
       <Divider />
       <CardBody>
-        <Skeleton>
+        <Skeleton className={cn(styles.skeletonText)}>
           <p>Make beautiful websites regardless of your design experience.</p>
         </Skeleton>
       </CardBody>
       <Divider />
       <CardFooter>
-        <Skeleton>
+        <Skeleton className={cn(styles.skeletonFooter)}>
           <Link
             isExternal
             showAnchorIcon

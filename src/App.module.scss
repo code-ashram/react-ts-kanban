@@ -16,6 +16,8 @@
 
 :local(.kanbanList) {
   padding: 20px;
+  min-width: 356px;
+  min-height: 210px;
   background-color: #0f111a;
   border-radius: 20px;
   border: #4d5151 2px solid;
@@ -32,4 +34,39 @@
 
 :local(.listItem) {
   width: 312px;
+  min-height: 116px;
+}
+
+:local(.skeletonImg) {
+  width: 40px;
+  height: 40px;
+  border-radius: 9px;
+}
+
+:local(.skeletonTitle) {
+  margin-bottom: 2px;
+  width: 150px;
+  height: 20px;
+  border-radius: 5px;
+}
+
+:local(.skeletonSubtitle) {
+  width: 200px;
+  height: 20px;
+  border-radius: 5px;
+}
+
+:local(.skeletonText) {
+  width: 100px;
+  height: 24px;
+  border-radius: 5px;
+}
+
+:local(.skeletonText):first-child {
+  margin-bottom: 2px;
+}
+
+:local(.skeletonFooter) {
+  height: 24px;
+  border-radius: 5px;
 }
