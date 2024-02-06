@@ -9,8 +9,12 @@ const client = axios.create({
   baseURL: BASE_URL
 })
 
-export const getTodos = async (status: Status): Promise<Todo[]> =>
-  client.get<Todo[]>(`/todos?status=${status}&_sort=order&_start=0&_limit=3`)
+// export const getTodos = async (status: Status): Promise<Todo[]> =>
+//   client.get<Todo[]>(`/todos?status=${status}&_sort=order&_start=0&_limit=3`)
+//     .then((response) => response.data)
+
+export const getTodos = async (status: Status, top: number, skip: number): Promise<Todo[]> =>
+  client.get<Todo[]>(`/todos?status=${status}&_sort=order&_start=${skip}&_limit=${top}`)
     .then((response) => response.data)
 
 export const getTodo = async (id: string): Promise<Todo> =>

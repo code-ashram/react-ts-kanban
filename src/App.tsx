@@ -20,7 +20,7 @@ const App = () => {
         .filter(([key]) => isNaN(+key))
         .map<UseQueryOptions<Todo[], Error>>(([, value]) => ({
           queryKey: ['todo', value],
-          queryFn: () => getTodos(value as Status)
+          queryFn: () => getTodos(value as Status, 3, 0)
         })),
       combine: (results) => ({
         data: results.map(result => result.data),
@@ -31,7 +31,7 @@ const App = () => {
 
   useEffect(() => {
     if (data.every((list) => Array.isArray(list)))
-      setColumns((prevColumn) => prevColumn.map((column, index) => ({
+      setColumns((prevColumns) => prevColumns.map((column, index) => ({
         ...column,
         todos: data[index] as Todo[]
       })))
@@ -58,7 +58,7 @@ const App = () => {
     <DragDropContext onDragEnd={onDragEnd}>
       <div className={cn(styles.kanbanWrapper)}>
         {columns.map((column) => (
-          <KanbanColumn key={column.id} column={column} isLoading={isLoading}/>
+          <KanbanColumn key={column.id} column={column} isLoading={isLoading} onChange={setColumns} />
         ))}
       </div>
     </DragDropContext>
