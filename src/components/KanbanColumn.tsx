@@ -22,19 +22,25 @@ type Props = {
 const KanbanColumn: FC<Props> = ({ column, isLoading, onChange }) => {
   const queryClient = useQueryClient()
   const [hasMoreTasks, setHasMoreTasks] = useState<boolean>(true)
+  const [additionalLoading, setAdditionalLoading] = useState<boolean>(false)
 
   const handleLoadMore = () => {
+    setAdditionalLoading(true)
+
     queryClient
       .fetchQuery({ queryKey: ['todos'], queryFn: () => getTodos(column.id, TOP_VALUE, column.todos.length) })
       .then(data =>
         onChange((prevColumns) => prevColumns.map((currentColumn) => {
           if (data.length < TOP_VALUE) setHasMoreTasks(prevIsVisible => !prevIsVisible)
 
+          console.log(additionalLoading)
+
           return currentColumn.id === column.id
             ? { ...currentColumn, todos: [...currentColumn.todos, ...data] }
             : currentColumn
         })))
       .catch(error => console.log(error))
+      .finally(() => setAdditionalLoading(false))
   }
 
   return (
