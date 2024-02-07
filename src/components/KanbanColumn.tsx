@@ -1,16 +1,17 @@
-import { Dispatch, FC, SetStateAction } from 'react'
+import { Dispatch, FC, SetStateAction, useState } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 import cn from 'classnames'
 
 import { Droppable } from './Droppable.tsx'
 import KanbanCard from './KanbanCard.tsx'
+import SkeletonCard from './SkeletonCard.tsx'
+import KanbanButton from './UI/KanbanButton.tsx'
 
+import { getTodos } from '../api'
 import { Column } from '../models'
 
 import styles from '../App.module.scss'
-import SkeletonCard from './SkeletonCard.tsx'
-import KanbanButton from './UI/KanbanButton.tsx'
-import { useQueryClient } from '@tanstack/react-query'
-import { getTodos } from '../api'
+import { TOP_VALUE } from './constants.ts'
 
 type Props = {
   column: Column
@@ -20,16 +21,19 @@ type Props = {
 
 const KanbanColumn: FC<Props> = ({ column, isLoading, onChange }) => {
   const queryClient = useQueryClient()
+  const [hasMoreTasks, setHasMoreTasks] = useState<boolean>(true)
 
   const handleLoadMore = () => {
     queryClient
-      .fetchQuery({ queryKey: ['todos'], queryFn: () => getTodos(column.id, 2, column.todos.length) })
+      .fetchQuery({ queryKey: ['todos'], queryFn: () => getTodos(column.id, TOP_VALUE, column.todos.length) })
       .then(data =>
-        onChange((prevColumns) => prevColumns.map((currentColumn) =>
-          currentColumn.id === column.id
+        onChange((prevColumns) => prevColumns.map((currentColumn) => {
+          if (data.length < TOP_VALUE) setHasMoreTasks(prevIsVisible => !prevIsVisible)
+
+          return currentColumn.id === column.id
             ? { ...currentColumn, todos: [...currentColumn.todos, ...data] }
             : currentColumn
-        )))
+        })))
       .catch(error => console.log(error))
   }
 
@@ -50,7 +54,7 @@ const KanbanColumn: FC<Props> = ({ column, isLoading, onChange }) => {
               {provided.placeholder}
             </ul>
 
-            <KanbanButton onClick={handleLoadMore}>Load More</KanbanButton>
+            {hasMoreTasks && <KanbanButton onClick={handleLoadMore}>Load More</KanbanButton>}
           </div>
         )}
       </Droppable>
