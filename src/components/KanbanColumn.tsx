@@ -9,9 +9,9 @@ import KanbanButton from './UI/KanbanButton.tsx'
 
 import { getTodos } from '../api'
 import { Column } from '../models'
+import { TOP_VALUE } from './constants.ts'
 
 import styles from '../App.module.scss'
-import { TOP_VALUE } from './constants.ts'
 
 type Props = {
   column: Column
@@ -32,8 +32,6 @@ const KanbanColumn: FC<Props> = ({ column, isLoading, onChange }) => {
       .then(data =>
         onChange((prevColumns) => prevColumns.map((currentColumn) => {
           if (data.length < TOP_VALUE) setHasMoreTasks(prevIsVisible => !prevIsVisible)
-
-          console.log(additionalLoading)
 
           return currentColumn.id === column.id
             ? { ...currentColumn, todos: [...currentColumn.todos, ...data] }
@@ -56,6 +54,8 @@ const KanbanColumn: FC<Props> = ({ column, isLoading, onChange }) => {
                 ))
                 : new Array(3).fill(null).map((_, index) => <SkeletonCard key={index} />)
               }
+
+              {additionalLoading && new Array(TOP_VALUE).fill(null).map((_, index) => <SkeletonCard key={index} />)}
 
               {provided.placeholder}
             </ul>
