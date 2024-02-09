@@ -22,10 +22,10 @@ type Props = {
 const KanbanColumn: FC<Props> = ({ column, isLoading, onChange }) => {
   const queryClient = useQueryClient()
   const [hasMoreTasks, setHasMoreTasks] = useState<boolean>(true)
-  const [additionalLoading, setAdditionalLoading] = useState<boolean>(false)
+  const [isFetching, setIsFetching] = useState<boolean>(false)
 
   const handleLoadMore = () => {
-    setAdditionalLoading(true)
+    setIsFetching(true)
 
     queryClient
       .fetchQuery({ queryKey: ['todos'], queryFn: () => getTodos(column.id, TOP_VALUE, column.todos.length) })
@@ -38,8 +38,10 @@ const KanbanColumn: FC<Props> = ({ column, isLoading, onChange }) => {
             : currentColumn
         })))
       .catch(error => console.log(error))
-      .finally(() => setAdditionalLoading(false))
+      .finally(() => setIsFetching(false))
   }
+
+  console.log({ isLoading, isFetching, result: isLoading || isFetching  })
 
   return (
     <>
@@ -48,19 +50,21 @@ const KanbanColumn: FC<Props> = ({ column, isLoading, onChange }) => {
           <div className={cn(styles.kanbanColumn)}>
             <h2 className={cn(styles.columnTitle)}>{column.title}:</h2>
             <ul ref={provided.innerRef} className={cn(styles.kanbanList)} {...provided.droppableProps}>
-              {!isLoading
-                ? column.todos.map((todo, index) => (
-                  <KanbanCard key={todo.id} id={todo.id} index={index} todo={todo} />
-                ))
-                : new Array(3).fill(null).map((_, index) => <SkeletonCard key={index} />)
-              }
+              {!isLoading && column.todos?.map((todo, index) =>
+                <KanbanCard key={todo.id} id={todo.id} index={index} todo={todo} />
+              )}
 
-              {additionalLoading && new Array(TOP_VALUE).fill(null).map((_, index) => <SkeletonCard key={index} />)}
+              {(isLoading || isFetching) && new Array(TOP_VALUE).fill(null).map((_, index) =>
+                <SkeletonCard key={index} />
+              )}
 
               {provided.placeholder}
             </ul>
 
-            {hasMoreTasks && <KanbanButton onClick={handleLoadMore}>Load More</KanbanButton>}
+            {!isLoading && !isFetching && hasMoreTasks && (
+              <KanbanButton onClick={handleLoadMore}>Load More</KanbanButton>
+            )}
+
           </div>
         )}
       </Droppable>
