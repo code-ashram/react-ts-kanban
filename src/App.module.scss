@@ -20,6 +20,7 @@
 
 :local(.kanbanList) {
   padding: 20px;
+  margin-bottom: 20px;
   min-width: 356px;
   min-height: 210px;
   background-color: #0f111a;
@@ -32,6 +33,7 @@
 }
 
 :local(.columnTitle) {
+  padding: 16px;
   font-size: 20px;
   text-align: center;
 }
@@ -76,6 +78,5 @@
 }
 
 :local(.btn.columnBtn) {
-  margin-top: 20px;
   font-weight: bold;
 }

@@ -11,6 +11,7 @@ import { Column, Todo } from './models'
 import { compareColumns } from './utils'
 
 import styles from './App.module.scss'
+import KanbanNavbar from './components/KanbanNavbar/KanbanNavbar.tsx'
 
 const App = () => {
   const [columns, setColumns] = useState<Column[]>(InitialColumns)
@@ -55,13 +56,18 @@ const App = () => {
   }
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <div className={cn(styles.kanbanWrapper)}>
-        {columns.map((column) => (
-          <KanbanColumn key={column.id} column={column} isLoading={isLoading} onChange={setColumns} />
-        ))}
-      </div>
-    </DragDropContext>
+    <>
+      <KanbanNavbar/>
+
+      <DragDropContext onDragEnd={onDragEnd}>
+        <div className={cn(styles.kanbanWrapper)}>
+          {columns.map((column) => (
+            <KanbanColumn key={column.id} column={column} isLoading={isLoading} onChange={setColumns} />
+          ))}
+        </div>
+      </DragDropContext>
+    </>
+
   )
 }
 

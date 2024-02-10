@@ -41,8 +41,6 @@ const KanbanColumn: FC<Props> = ({ column, isLoading, onChange }) => {
       .finally(() => setIsFetching(false))
   }
 
-  console.log({ isLoading, isFetching, result: isLoading || isFetching  })
-
   return (
     <>
       <Droppable droppableId={String(column.id)}>

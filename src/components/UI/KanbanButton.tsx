@@ -7,10 +7,11 @@ import styles from '../../App.module.scss'
 type Props = {
   onClick: () => void
   children: ReactNode
+  buttonType?: 'button' | 'submit' | 'reset' | undefined,
 }
 
-const KanbanButton: FC<Props> = ({ children, onClick }) => (
-  <Button className={cn(styles.btn, styles.columnBtn)} onClick={onClick} color="primary">
+const KanbanButton: FC<Props> = ({buttonType = 'button', children, onClick }) => (
+  <Button type={buttonType} className={cn(styles.btn)} onClick={onClick} color="primary">
     {children}
   </Button>
 )
