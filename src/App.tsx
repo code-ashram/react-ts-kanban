@@ -57,7 +57,7 @@ const App = () => {
 
   return (
     <>
-      <KanbanNavbar/>
+      <KanbanNavbar onCreate={setColumns}/>
 
       <DragDropContext onDragEnd={onDragEnd}>
         <div className={cn(styles.kanbanWrapper)}>
