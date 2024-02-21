@@ -18,9 +18,9 @@ import KanbanPlusIco from '../KanbanNavbar/assets/images/KanbanPlusIco.tsx'
 
 import { priorities, PRIORITY, statuses } from './constants.ts'
 import { Todo } from '../../models'
+import { generateTodo } from '../../utils'
 
 import styles from '../../App.module.scss'
-import { generateTodo } from '../../utils'
 
 type OnCreate = (todo: Omit<Todo, 'id'>) => void
 type OnUpdate = (todo: Todo) => void

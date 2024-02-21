@@ -4,6 +4,7 @@ import { DragDropContext, DropResult } from 'react-beautiful-dnd'
 import { useQueries, UseQueryOptions } from '@tanstack/react-query'
 
 import KanbanColumn from './components/KanbanColumn'
+import KanbanNavbar from './components/KanbanNavbar/KanbanNavbar.tsx'
 
 import { getTodos } from './api'
 import { InitialColumns, Status } from './constants'
@@ -11,7 +12,6 @@ import { Column, Todo } from './models'
 import { compareColumns } from './utils'
 
 import styles from './App.module.scss'
-import KanbanNavbar from './components/KanbanNavbar/KanbanNavbar.tsx'
 
 const App = () => {
   const [columns, setColumns] = useState<Column[]>(InitialColumns)

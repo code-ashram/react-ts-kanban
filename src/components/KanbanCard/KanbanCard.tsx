@@ -3,17 +3,21 @@ import { Card, CardHeader, CardBody, CardFooter, Divider, Link, Image } from '@n
 import cn from 'classnames'
 import { Draggable } from 'react-beautiful-dnd'
 
-import { Todo } from '../models'
+import { Todo } from '../../models'
 
-import styles from '../App.module.scss'
+import styles from '../../App.module.scss'
+import KanbanPopover from './parts/KanbanPopover.tsx'
 
 type Props = {
   id: string
   index: number
   todo: Todo
+  onDelete: (todo: Pick<Todo, 'id' | 'status'>) => void
+  onEdit: (id: string) => void
 }
 
-const KanbanCard: FC<Props> = ({ id, index, todo }) => {
+const KanbanCard: FC<Props> = ({ id, index, todo, onDelete, onEdit }) => {
+
   return (
     <Draggable key={id} draggableId={id} index={index}>
       {(provided) => (
@@ -49,8 +53,9 @@ const KanbanCard: FC<Props> = ({ id, index, todo }) => {
               </div>
             </CardHeader>
             <Divider />
-            <CardBody>
+            <CardBody className="flex flex-row justify-between items-center">
               <p>Priority: {todo.priority}</p>
+              <KanbanPopover onEdit={() => onEdit(todo.id)} onDelete={() => onDelete(todo)} />
             </CardBody>
             <Divider />
             <CardFooter>

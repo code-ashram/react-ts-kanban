@@ -3,12 +3,12 @@ import { useQueryClient } from '@tanstack/react-query'
 import cn from 'classnames'
 
 import { Droppable } from './Droppable.tsx'
-import KanbanCard from './KanbanCard.tsx'
+import KanbanCard from './KanbanCard/KanbanCard.tsx'
 import SkeletonCard from './SkeletonCard.tsx'
 import KanbanButton from './UI/KanbanButton.tsx'
 
 import { getTodos } from '../api'
-import { Column } from '../models'
+import { Column, Todo } from '../models'
 import { TOP_VALUE } from './constants.ts'
 
 import styles from '../App.module.scss'
@@ -41,6 +41,16 @@ const KanbanColumn: FC<Props> = ({ column, isLoading, onChange }) => {
       .finally(() => setIsFetching(false))
   }
 
+  const handleDeleteTask = (todo: Pick<Todo, 'id' | 'status'>) => {
+    onChange((prevColumns) => prevColumns.map((currentColumn) =>
+      currentColumn.id === todo.status
+        ? { ...currentColumn, todos: currentColumn.todos.filter((task) => task.id !== todo.id) }
+        : currentColumn
+    ))
+
+    console.log('Delete!')
+  }
+
   return (
     <>
       <Droppable droppableId={String(column.id)}>
@@ -49,7 +59,7 @@ const KanbanColumn: FC<Props> = ({ column, isLoading, onChange }) => {
             <h2 className={cn(styles.columnTitle)}>{column.title}:</h2>
             <ul ref={provided.innerRef} className={cn(styles.kanbanList)} {...provided.droppableProps}>
               {!isLoading && column.todos?.map((todo, index) =>
-                <KanbanCard key={todo.id} id={todo.id} index={index} todo={todo} />
+                <KanbanCard key={todo.id} id={todo.id} index={index} todo={todo} onDelete={handleDeleteTask} onEdit={() => console.log(todo.id)}/>
               )}
 
               {(isLoading || isFetching) && new Array(TOP_VALUE).fill(null).map((_, index) =>
