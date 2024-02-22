@@ -1,12 +1,14 @@
 import { Dispatch, FC, SetStateAction } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button } from '@nextui-org/react'
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button, useDisclosure } from '@nextui-org/react'
 
 import KanbanLogo from './assets/images/KanbanLogo.tsx'
 import KanbanForm from '../KanbanForm/KanbanForm.tsx'
 
 import { createTodo } from '../../api'
 import { Column, Todo } from '../../models'
+import KanbanButton from '../UI/KanbanButton.tsx'
+import KanbanPlusIco from './assets/images/KanbanPlusIco.tsx'
 
 type Props = {
   onCreate: Dispatch<SetStateAction<Column[]>>
@@ -14,6 +16,7 @@ type Props = {
 
 const KanbanNavbar: FC<Props> = ({ onCreate }) => {
   const queryClient = useQueryClient()
+  const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
   const handleCreateTask = (todo: Omit<Todo, 'id'>) => {
     queryClient
@@ -21,7 +24,7 @@ const KanbanNavbar: FC<Props> = ({ onCreate }) => {
       .then(task =>
         onCreate((prevColumns) => prevColumns.map((currentColumn) =>
           currentColumn.id === task.status
-            ? { ...currentColumn, todos: [...currentColumn.todos, task] }
+            ? { ...currentColumn, todos: [task, ...currentColumn.todos] }
             : currentColumn
         ))
       )
@@ -35,7 +38,11 @@ const KanbanNavbar: FC<Props> = ({ onCreate }) => {
       </NavbarBrand>
       <NavbarContent className="sm:flex gap-4" justify="center">
         <NavbarItem>
-          <KanbanForm onSubmit={handleCreateTask} />
+          <KanbanButton onClick={onOpen}>
+            <KanbanPlusIco />
+          </KanbanButton>
+
+          <KanbanForm isOpen={isOpen} onOpenChange={onOpenChange} onSubmit={handleCreateTask} />
         </NavbarItem>
       </NavbarContent>
       <NavbarContent justify="end">

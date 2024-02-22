@@ -47,8 +47,18 @@ const KanbanColumn: FC<Props> = ({ column, isLoading, onChange }) => {
         ? { ...currentColumn, todos: currentColumn.todos.filter((task) => task.id !== todo.id) }
         : currentColumn
     ))
+  }
 
-    console.log('Delete!')
+  const handleUpdateTask = (todo: Todo) => {
+    onChange((prevColumns) => prevColumns.map((currentColumn) =>
+      currentColumn.id === todo.status
+        ? { ...currentColumn, todos: currentColumn.todos.map((task) =>
+            task.id === todo.id
+              ? todo
+              : task
+          )}
+        : currentColumn
+    ))
   }
 
   return (
@@ -59,7 +69,8 @@ const KanbanColumn: FC<Props> = ({ column, isLoading, onChange }) => {
             <h2 className={cn(styles.columnTitle)}>{column.title}:</h2>
             <ul ref={provided.innerRef} className={cn(styles.kanbanList)} {...provided.droppableProps}>
               {!isLoading && column.todos?.map((todo, index) =>
-                <KanbanCard key={todo.id} id={todo.id} index={index} todo={todo} onDelete={handleDeleteTask} onEdit={() => console.log(todo.id)}/>
+                <KanbanCard key={todo.id} id={todo.id} index={index} todo={todo} onDelete={handleDeleteTask}
+                            onUpdate={handleUpdateTask} />
               )}
 
               {(isLoading || isFetching) && new Array(TOP_VALUE).fill(null).map((_, index) =>

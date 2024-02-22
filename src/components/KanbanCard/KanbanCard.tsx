@@ -1,22 +1,25 @@
 import { FC } from 'react'
-import { Card, CardHeader, CardBody, CardFooter, Divider, Link, Image } from '@nextui-org/react'
+import { Card, CardHeader, CardBody, CardFooter, Divider, Link, Image, useDisclosure } from '@nextui-org/react'
 import cn from 'classnames'
 import { Draggable } from 'react-beautiful-dnd'
+
+import KanbanPopover from './parts/KanbanPopover.tsx'
+import KanbanForm from '../KanbanForm/KanbanForm.tsx'
 
 import { Todo } from '../../models'
 
 import styles from '../../App.module.scss'
-import KanbanPopover from './parts/KanbanPopover.tsx'
 
 type Props = {
   id: string
   index: number
   todo: Todo
   onDelete: (todo: Pick<Todo, 'id' | 'status'>) => void
-  onEdit: (id: string) => void
+  onUpdate: (todo: Todo) => void
 }
 
-const KanbanCard: FC<Props> = ({ id, index, todo, onDelete, onEdit }) => {
+const KanbanCard: FC<Props> = ({ id, index, todo, onDelete,  onUpdate}) => {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
   return (
     <Draggable key={id} draggableId={id} index={index}>
@@ -27,6 +30,9 @@ const KanbanCard: FC<Props> = ({ id, index, todo, onDelete, onEdit }) => {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
+
+          <KanbanForm isOpen={isOpen} onOpenChange={onOpenChange} todo={todo} onSubmit={onUpdate} />
+
           <Card className="max-w-[400px]">
             <CardHeader className="flex gap-3">
               <Image
@@ -55,7 +61,7 @@ const KanbanCard: FC<Props> = ({ id, index, todo, onDelete, onEdit }) => {
             <Divider />
             <CardBody className="flex flex-row justify-between items-center">
               <p>Priority: {todo.priority}</p>
-              <KanbanPopover onEdit={() => onEdit(todo.id)} onDelete={() => onDelete(todo)} />
+              <KanbanPopover onEdit={onOpen} onDelete={() => onDelete(todo)} />
             </CardBody>
             <Divider />
             <CardFooter>

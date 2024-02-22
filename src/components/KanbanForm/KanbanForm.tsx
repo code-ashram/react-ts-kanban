@@ -8,13 +8,9 @@ import {
   Input,
   SelectItem,
   Select,
-  useDisclosure
 } from '@nextui-org/react'
 import cn from 'classnames'
 import { FC, FormEvent, useState } from 'react'
-
-import KanbanButton from '../UI/KanbanButton.tsx'
-import KanbanPlusIco from '../KanbanNavbar/assets/images/KanbanPlusIco.tsx'
 
 import { priorities, PRIORITY, statuses } from './constants.ts'
 import { Todo } from '../../models'
@@ -27,11 +23,12 @@ type OnUpdate = (todo: Todo) => void
 
 type Props = {
   onSubmit: OnCreate | OnUpdate,
+  isOpen: boolean,
+  onOpenChange: () => void,
   todo?: Todo
 }
 
-const KanbanApp: FC<Props> = ({ onSubmit, todo: task }) => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+const KanbanApp: FC<Props> = ({ onSubmit, isOpen, onOpenChange,  todo: task }) => {
   const [todo, setTodo] = useState<Omit<Todo, 'id'> | Todo>(task || generateTodo)
 
   const handleChangeTodo = (payload: Partial<Todo>): void => {
@@ -46,15 +43,14 @@ const KanbanApp: FC<Props> = ({ onSubmit, todo: task }) => {
 
   return (
     <>
-      <KanbanButton onClick={onOpen}>
-        <KanbanPlusIco />
-      </KanbanButton>
-
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
             <form onSubmit={handleSubmitTodo}>
-              <ModalHeader className={`flex flex-col gap-1`}>Add Todo</ModalHeader>
+              <ModalHeader className={`flex flex-col gap-1`}>
+                {task ? 'Edit current todo' : 'Add new Todo'}
+              </ModalHeader>
+
               <ModalBody className={cn(styles.modalForm)}>
                 <Input
                   onChange={(e) => handleChangeTodo({ title: e.target.value })}
@@ -68,7 +64,7 @@ const KanbanApp: FC<Props> = ({ onSubmit, todo: task }) => {
                 <Select
                   label="Status"
                   placeholder="Choose a status"
-                  defaultSelectedKeys={['0']}
+                  defaultSelectedKeys={[task ? String(todo.status) : '0']}
                   className="mt-2 max-w"
                   onChange={(e) => handleChangeTodo({ status: Number(e.target.value) })}
                 >
@@ -82,7 +78,7 @@ const KanbanApp: FC<Props> = ({ onSubmit, todo: task }) => {
                 <Select
                   label="Priority"
                   placeholder="Choose a priority"
-                  defaultSelectedKeys={[PRIORITY.MID]}
+                  defaultSelectedKeys={[task ? todo.priority : PRIORITY.MID]}
                   className="mt-2 max-w"
                   onChange={(e) => handleChangeTodo({ priority: e.target.value })}
                 >
@@ -100,7 +96,7 @@ const KanbanApp: FC<Props> = ({ onSubmit, todo: task }) => {
                 </Button>
 
                 <Button color="primary" type="submit">
-                  Add
+                  {task ? 'Save' : 'Add'}
                 </Button>
               </ModalFooter>
             </form>
