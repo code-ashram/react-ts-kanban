@@ -24,11 +24,11 @@ type OnUpdate = (todo: Todo) => void
 type Props = {
   onSubmit: OnCreate | OnUpdate,
   isOpen: boolean,
-  onOpenChange: () => void,
+  onClose: () => void,
   todo?: Todo
 }
 
-const KanbanApp: FC<Props> = ({ onSubmit, isOpen, onOpenChange,  todo: task }) => {
+const KanbanForm: FC<Props> = ({ onSubmit, isOpen, onClose,  todo: task }) => {
   const [todo, setTodo] = useState<Omit<Todo, 'id'> | Todo>(task || generateTodo)
 
   const handleChangeTodo = (payload: Partial<Todo>): void => {
@@ -39,11 +39,12 @@ const KanbanApp: FC<Props> = ({ onSubmit, isOpen, onOpenChange,  todo: task }) =
     e.preventDefault()
     onSubmit(todo as Todo)
     setTodo(prevTodo => ({ ...prevTodo, title: '' }))
+    onClose()
   }
 
   return (
     <>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal isOpen={isOpen} onClose={onClose}>
         <ModalContent>
           {(onClose) => (
             <form onSubmit={handleSubmitTodo}>
@@ -107,4 +108,4 @@ const KanbanApp: FC<Props> = ({ onSubmit, isOpen, onOpenChange,  todo: task }) =
   )
 }
 
-export default KanbanApp
+export default KanbanForm

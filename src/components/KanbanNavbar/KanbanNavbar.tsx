@@ -16,7 +16,7 @@ type Props = {
 
 const KanbanNavbar: FC<Props> = ({ onCreate }) => {
   const queryClient = useQueryClient()
-  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const handleCreateTask = (todo: Omit<Todo, 'id'>) => {
     queryClient
@@ -42,7 +42,7 @@ const KanbanNavbar: FC<Props> = ({ onCreate }) => {
             <KanbanPlusIco />
           </KanbanButton>
 
-          <KanbanForm isOpen={isOpen} onOpenChange={onOpenChange} onSubmit={handleCreateTask} />
+          <KanbanForm isOpen={isOpen} onClose={onClose} onSubmit={handleCreateTask} />
         </NavbarItem>
       </NavbarContent>
       <NavbarContent justify="end">

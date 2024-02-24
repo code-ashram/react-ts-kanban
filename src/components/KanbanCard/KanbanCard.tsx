@@ -14,12 +14,12 @@ type Props = {
   id: string
   index: number
   todo: Todo
-  onDelete: (todo: Pick<Todo, 'id' | 'status'>) => void
+  onDelete: (todo: Todo) => void
   onUpdate: (todo: Todo) => void
 }
 
 const KanbanCard: FC<Props> = ({ id, index, todo, onDelete,  onUpdate}) => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
     <Draggable key={id} draggableId={id} index={index}>
@@ -31,7 +31,7 @@ const KanbanCard: FC<Props> = ({ id, index, todo, onDelete,  onUpdate}) => {
           {...provided.dragHandleProps}
         >
 
-          <KanbanForm isOpen={isOpen} onOpenChange={onOpenChange} todo={todo} onSubmit={onUpdate} />
+          <KanbanForm isOpen={isOpen} onClose={onClose} todo={todo} onSubmit={onUpdate} />
 
           <Card className="max-w-[400px]">
             <CardHeader className="flex gap-3">

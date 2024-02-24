@@ -7,7 +7,7 @@ import KanbanCard from './KanbanCard/KanbanCard.tsx'
 import SkeletonCard from './SkeletonCard.tsx'
 import KanbanButton from './UI/KanbanButton.tsx'
 
-import { getTodos } from '../api'
+import { deleteTodo, getTodos, updateTodo } from '../api'
 import { Column, Todo } from '../models'
 import { TOP_VALUE } from './constants.ts'
 
@@ -41,24 +41,33 @@ const KanbanColumn: FC<Props> = ({ column, isLoading, onChange }) => {
       .finally(() => setIsFetching(false))
   }
 
-  const handleDeleteTask = (todo: Pick<Todo, 'id' | 'status'>) => {
-    onChange((prevColumns) => prevColumns.map((currentColumn) =>
-      currentColumn.id === todo.status
-        ? { ...currentColumn, todos: currentColumn.todos.filter((task) => task.id !== todo.id) }
-        : currentColumn
-    ))
+  const handleDeleteTask = (todo: Todo) => {
+    queryClient
+      .fetchQuery({ queryKey: ['todo'], queryFn: () => deleteTodo(todo.id) })
+      .then(() =>
+        onChange((prevColumns) => prevColumns.map((currentColumn) =>
+          currentColumn.id === todo.status
+            ? { ...currentColumn, todos: currentColumn.todos.filter((task) => task.id !== todo.id) }
+            : currentColumn
+        ))
+      )
   }
 
   const handleUpdateTask = (todo: Todo) => {
-    onChange((prevColumns) => prevColumns.map((currentColumn) =>
-      currentColumn.id === todo.status
-        ? { ...currentColumn, todos: currentColumn.todos.map((task) =>
-            task.id === todo.id
-              ? todo
-              : task
-          )}
-        : currentColumn
-    ))
+    queryClient
+      .fetchQuery({ queryKey: ['todo'], queryFn: () => updateTodo(todo) })
+      .then((todoTask) =>
+        onChange((prevColumns) => prevColumns.map((currentColumn) =>
+          currentColumn.id === todoTask.status
+            ? {
+              ...currentColumn, todos: currentColumn.todos.map((task) =>
+                task.id === todoTask.id
+                  ? todoTask
+                  : task
+              )
+            }
+            : currentColumn
+        )))
   }
 
   return (
