@@ -56,18 +56,33 @@ const KanbanColumn: FC<Props> = ({ column, isLoading, onChange }) => {
   const handleUpdateTask = (todo: Todo) => {
     queryClient
       .fetchQuery({ queryKey: ['todo'], queryFn: () => updateTodo(todo) })
-      .then((todoTask) =>
-        onChange((prevColumns) => prevColumns.map((currentColumn) =>
-          currentColumn.id === todoTask.status
-            ? {
-              ...currentColumn, todos: currentColumn.todos.map((task) =>
-                task.id === todoTask.id
-                  ? todoTask
-                  : task
-              )
-            }
-            : currentColumn
-        )))
+      .then((todoTask) => {
+          const hasNewStatus = column.todos.find(({ id }) => id === todo.id)?.status === todo.status
+
+             onChange((prevColumns) =>
+              prevColumns.map((currentColumn) =>
+                currentColumn.id === todoTask.status
+                  ? {
+                    ...currentColumn, todos: currentColumn.todos.map((task) =>
+                      task.id === todoTask.id
+                        ? todoTask
+                        : task
+                    )
+                  }
+                  : currentColumn
+              ))
+
+             onChange((prevColumns) =>
+              prevColumns.map((currentColumn) =>
+                currentColumn.id !== todoTask.status
+                  ? {
+                    ...currentColumn, todos: currentColumn.todos.filter((task) => task.id !== todoTask.id
+                    )
+                  }
+                  : currentColumn
+              ))
+        }
+      )
   }
 
   return (
