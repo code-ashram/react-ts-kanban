@@ -38,7 +38,7 @@ const KanbanForm: FC<Props> = ({ onSubmit, isOpen, onClose,  todo: task }) => {
   const handleSubmitTodo = (e: FormEvent) => {
     e.preventDefault()
     onSubmit(todo as Todo)
-    setTodo(prevTodo => ({ ...prevTodo, title: '' }))
+    !task && setTodo(prevTodo => ({ ...prevTodo, title: '' }))
     onClose()
   }
 

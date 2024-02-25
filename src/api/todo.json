@@ -7,16 +7,16 @@
       "creationTime": "2023-12-29T18:17:00.000Z",
       "priority": "Mid",
       "order": 4,
-      "status": 1
+      "status": 2
     },
     {
       "id": "6",
-      "title": "Finish the project",
+      "title": "Finish the projects",
       "isDone": false,
       "creationTime": "2024-01-03T19:48:00.000Z",
       "priority": "Low",
       "order": 5,
-      "status": 0
+      "status": 1
     },
     {
       "id": "7",
@@ -34,7 +34,7 @@
       "creationTime": "2024-01-05T21:21:00.000Z",
       "priority": "Mid",
       "order": 7,
-      "status": 1
+      "status": 2
     },
     {
       "id": "10",
@@ -43,16 +43,16 @@
       "creationTime": "2023-09-25T08:23:00.000Z",
       "priority": "High",
       "order": 0,
-      "status": 0
+      "status": 1
     },
     {
       "id": "11",
-      "title": "Chant Holy Name",
+      "title": "Escape from hell",
       "isDone": true,
       "creationTime": "2023-09-27T00:43:00.000Z",
       "priority": "High",
       "order": 1,
-      "status": 0
+      "status": 1
     },
     {
       "id": "12",
@@ -61,7 +61,7 @@
       "creationTime": "2023-12-20T14:56:00.000Z",
       "priority": "Low",
       "order": 2,
-      "status": 0
+      "status": 1
     },
     {
       "id": "13",
@@ -88,7 +88,7 @@
       "creationTime": "2024-01-03T19:48:00.000Z",
       "priority": "Low",
       "order": 5,
-      "status": 2
+      "status": 0
     },
     {
       "id": "16",
@@ -97,7 +97,7 @@
       "creationTime": "2024-01-04T20:19:00.000Z",
       "priority": "High",
       "order": 6,
-      "status": 2
+      "status": 0
     },
     {
       "title": "Something wrong...",

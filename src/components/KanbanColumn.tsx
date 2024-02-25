@@ -57,30 +57,33 @@ const KanbanColumn: FC<Props> = ({ column, isLoading, onChange }) => {
     queryClient
       .fetchQuery({ queryKey: ['todo'], queryFn: () => updateTodo(todo) })
       .then((todoTask) => {
-          const hasNewStatus = column.todos.find(({ id }) => id === todo.id)?.status === todo.status
+          const hasNewStatus = column.todos.find(({ id }) => id === todo.id)?.status !== todo.status
 
-             onChange((prevColumns) =>
-              prevColumns.map((currentColumn) =>
-                currentColumn.id === todoTask.status
-                  ? {
-                    ...currentColumn, todos: currentColumn.todos.map((task) =>
-                      task.id === todoTask.id
-                        ? todoTask
-                        : task
-                    )
-                  }
-                  : currentColumn
-              ))
+          onChange((prevColumns) =>
+            prevColumns.map((currentColumn) =>
+              currentColumn.id === todoTask.status
+                ? {
+                  ...currentColumn, todos: currentColumn.todos.map((task) =>
+                    task.id === todoTask.id
+                      ? todoTask
+                      : task
+                  )
+                }
+                : { ...currentColumn, todos: currentColumn.todos.filter((task) => task.id !== todoTask.id) }
+            )
+          )
 
-             onChange((prevColumns) =>
-              prevColumns.map((currentColumn) =>
-                currentColumn.id !== todoTask.status
-                  ? {
-                    ...currentColumn, todos: currentColumn.todos.filter((task) => task.id !== todoTask.id
-                    )
-                  }
-                  : currentColumn
-              ))
+          // onChange((prevColumns) =>
+          //  prevColumns.map((currentColumn) =>
+          //    currentColumn.id !== todoTask.status
+          //      ? {
+          //        ...currentColumn, todos: currentColumn.todos.filter((task) => task.id !== todoTask.id
+          //        )
+          //      }
+          //      : currentColumn
+          //  ))
+
+          // console.log(hasNewStatus)
         }
       )
   }
