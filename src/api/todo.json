@@ -16,7 +16,7 @@
       "creationTime": "2024-01-03T19:48:00.000Z",
       "priority": "Low",
       "order": 5,
-      "status": 1
+      "status": 0
     },
     {
       "id": "7",
@@ -38,7 +38,7 @@
     },
     {
       "id": "10",
-      "title": "Cock prasadam",
+      "title": "Cook Bhagavat Prasadam!",
       "isDone": true,
       "creationTime": "2023-09-25T08:23:00.000Z",
       "priority": "High",
@@ -50,13 +50,13 @@
       "title": "Escape from hell",
       "isDone": true,
       "creationTime": "2023-09-27T00:43:00.000Z",
-      "priority": "High",
+      "priority": "Mid",
       "order": 1,
-      "status": 1
+      "status": 0
     },
     {
       "id": "12",
-      "title": "Read Bhagavad-Gita",
+      "title": "Read Bhagavad-Gita!!!",
       "isDone": false,
       "creationTime": "2023-12-20T14:56:00.000Z",
       "priority": "Low",
@@ -86,7 +86,7 @@
       "title": "Read Srimad-Bhagavatam",
       "isDone": false,
       "creationTime": "2024-01-03T19:48:00.000Z",
-      "priority": "Low",
+      "priority": "Mid",
       "order": 5,
       "status": 0
     },
@@ -97,7 +97,7 @@
       "creationTime": "2024-01-04T20:19:00.000Z",
       "priority": "High",
       "order": 6,
-      "status": 0
+      "status": 1
     },
     {
       "title": "Something wrong...",
