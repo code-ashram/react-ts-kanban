@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import cn from 'classnames'
 import { DragDropContext, DropResult } from 'react-beautiful-dnd'
-import { useQueries, UseQueryOptions } from '@tanstack/react-query'
+import { useQueries, useQueryClient, UseQueryOptions } from '@tanstack/react-query'
 
 import KanbanColumn from './components/KanbanColumn'
 import KanbanNavbar from './components/KanbanNavbar/KanbanNavbar.tsx'
 
-import { getTodos } from './api'
+import { getTodos, patchTodo } from './api'
 import { InitialColumns, Status } from './constants'
 import { Column, Todo } from './models'
 import { compareColumns } from './utils'
@@ -29,6 +29,7 @@ const App = () => {
       })
     }
   )
+  const queryClient = useQueryClient()
 
   useEffect(() => {
     if (data.every((list) => Array.isArray(list)))
@@ -43,21 +44,28 @@ const App = () => {
       setColumns((prevColumns) => {
         const sourceColumn = prevColumns.find((column) => column.id === Number(result.source.droppableId))
         const destinationColumn = prevColumns.find((column) => column.id === Number(result.destination?.droppableId))
-        // PATCH
+
         if (sourceColumn && destinationColumn) {
           const [element] = sourceColumn.todos.splice(result.source.index, 1)
           destinationColumn.todos.splice(result.destination!.index, 0, element)
 
+          queryClient
+            .fetchQuery({ queryKey: ['todo'], queryFn: () => patchTodo(element.id, {status: destinationColumn.id}) })
+            .then()
+
           return prevColumns.map((column) => compareColumns(column, sourceColumn, destinationColumn))
+
         }
 
         return prevColumns
       })
+
+
   }
 
   return (
     <>
-      <KanbanNavbar onCreate={setColumns}/>
+      <KanbanNavbar onCreate={setColumns} />
 
       <DragDropContext onDragEnd={onDragEnd}>
         <div className={cn(styles.kanbanWrapper)}>
@@ -67,7 +75,6 @@ const App = () => {
         </div>
       </DragDropContext>
     </>
-
   )
 }
 

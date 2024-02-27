@@ -7,7 +7,7 @@
       "creationTime": "2023-12-29T18:17:00.000Z",
       "priority": "Mid",
       "order": 4,
-      "status": 2
+      "status": 0
     },
     {
       "id": "6",
@@ -43,7 +43,7 @@
       "creationTime": "2023-09-25T08:23:00.000Z",
       "priority": "High",
       "order": 0,
-      "status": 0
+      "status": 2
     },
     {
       "id": "11",
