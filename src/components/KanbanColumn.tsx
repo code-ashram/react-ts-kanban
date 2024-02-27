@@ -58,24 +58,30 @@ const KanbanColumn: FC<Props> = ({ column, isLoading, onChange }) => {
       .fetchQuery({ queryKey: ['todo'], queryFn: () => updateTodo(todo) })
       .then((todoTask) => {
           const hasNewStatus = column.todos.find(({ id }) => id === todo.id)?.status !== todo.status
-          hasNewStatus
-            ? onChange((prevColumns) =>
-              prevColumns.map((currentColumn) =>
-                currentColumn.id === todoTask.status
-                  ? { ...currentColumn, todos: [todoTask, ...currentColumn.todos] }
-                  : { ...currentColumn, todos: currentColumn.todos.filter((task) => task.id !== todoTask.id) }
-              ))
-            : onChange((prevColumns) =>
-              prevColumns.map((currentColumn) =>
-                currentColumn.id === todoTask.status
-                  ? {
-                    ...currentColumn, todos: currentColumn.todos.map((task) =>
-                      task.id === todoTask.id ? todoTask : task
-                    )
+
+          onChange((prevColumns) => {
+              if (hasNewStatus) {
+                return prevColumns.map((currentColumn) => {
+                  if (currentColumn.id === todoTask.status)
+                    return { ...currentColumn, todos: [todoTask, ...currentColumn.todos] }
+
+                  if (currentColumn.id === column.id) {
+                    return { ...currentColumn, todos: currentColumn.todos.filter((task) => task.id !== todoTask.id) }
+                  } else {
+                    return currentColumn
                   }
-                  : { ...currentColumn, todos: currentColumn.todos.filter((task) => task.id !== todoTask.id) }
-              )
-            )
+                })
+              } else {
+                return prevColumns.map((currentColumn) =>
+                  currentColumn.id === todoTask.status
+                    ? {
+                      ...currentColumn,
+                      todos: currentColumn.todos.map((task) => task.id === todoTask.id ? todoTask : task)
+                    }
+                    : currentColumn)
+              }
+            }
+          )
         }
       )
   }
