@@ -41,25 +41,30 @@ const App = () => {
 
   const onDragEnd = (result: DropResult): void => {
     if (Number.isFinite(result.destination?.index))
-      setColumns((prevColumns) => {
-        const sourceColumn = prevColumns.find((column) => column.id === Number(result.source.droppableId))
-        const destinationColumn = prevColumns.find((column) => column.id === Number(result.destination?.droppableId))
+      if (Number(result.source.droppableId) !== Number(result.destination?.droppableId))
 
-        if (sourceColumn && destinationColumn) {
-          const [element] = sourceColumn.todos.splice(result.source.index, 1)
-          destinationColumn.todos.splice(result.destination!.index, 0, element)
+        console.log(result)
 
-          queryClient
-            .fetchQuery({ queryKey: ['todo'], queryFn: () => patchTodo(element.id, {status: destinationColumn.id}) })
-            .then()
+        queryClient
+        .fetchQuery({ queryKey: ['todo'], queryFn: () => patchTodo(result.draggableId, { status: Number(result.destination?.droppableId) }) })
+        .then(response =>
+          setColumns((prevColumns) => {
+            const sourceColumn = prevColumns.find((column) => column.id === Number(result.source.droppableId))
+            const destinationColumn = prevColumns.find((column) => column.id === Number(result.destination?.droppableId))
 
-          return prevColumns.map((column) => compareColumns(column, sourceColumn, destinationColumn))
+            if (sourceColumn && destinationColumn) {
+              sourceColumn.todos.splice(result.source.index, 1)
+              destinationColumn.todos.splice(result.destination!.index, 0, response)
 
-        }
+              prevColumns.map((column) => column.todos.map((todo) =>
+                column.id === todo.status ? response : todo))
 
-        return prevColumns
-      })
+              return prevColumns.map((column) => compareColumns(column, sourceColumn, destinationColumn))
+            }
 
+            return prevColumns
+          })
+        )
 
   }
 
