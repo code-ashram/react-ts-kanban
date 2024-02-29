@@ -10,11 +10,14 @@ import { getTodos, patchTodo } from './api'
 import { InitialColumns, Status } from './constants'
 import { Column, Todo } from './models'
 import { compareColumns } from './utils'
+import KanbanError from './components/KanbanError.tsx'
 
 import styles from './App.module.scss'
 
 const App = () => {
   const [columns, setColumns] = useState<Column[]>(InitialColumns)
+  const [error, setError] = useState<Error | null>(null)
+
   const { data, isLoading } = useQueries(
     {
       queries: Object.entries(Status)
@@ -43,40 +46,43 @@ const App = () => {
     if (Number.isFinite(result.destination?.index))
       if (Number(result.source.droppableId) !== Number(result.destination?.droppableId))
 
-        console.log(result)
-
         queryClient
-        .fetchQuery({ queryKey: ['todo'], queryFn: () => patchTodo(result.draggableId, { status: Number(result.destination?.droppableId) }) })
-        .then(response =>
-          setColumns((prevColumns) => {
-            const sourceColumn = prevColumns.find((column) => column.id === Number(result.source.droppableId))
-            const destinationColumn = prevColumns.find((column) => column.id === Number(result.destination?.droppableId))
-
-            if (sourceColumn && destinationColumn) {
-              sourceColumn.todos.splice(result.source.index, 1)
-              destinationColumn.todos.splice(result.destination!.index, 0, response)
-
-              prevColumns.map((column) => column.todos.map((todo) =>
-                column.id === todo.status ? response : todo))
-
-              return prevColumns.map((column) => compareColumns(column, sourceColumn, destinationColumn))
-            }
-
-            return prevColumns
+          .fetchQuery({
+            queryKey: ['todo'],
+            queryFn: () => patchTodo(result.draggableId, { status: Number(result.destination?.droppableId) })
           })
-        )
+          .then(response =>
+            setColumns((prevColumns) => {
+              const sourceColumn = prevColumns.find((column) => column.id === Number(result.source.droppableId))
+              const destinationColumn = prevColumns.find((column) => column.id === Number(result.destination?.droppableId))
 
+              if (sourceColumn && destinationColumn) {
+                sourceColumn.todos.splice(result.source.index, 1)
+                destinationColumn.todos.splice(result.destination!.index, 0, response)
+
+                prevColumns.map((column) => column.todos.map((todo) =>
+                  column.id === todo.status ? response : todo))
+
+                return prevColumns.map((column) => compareColumns(column, sourceColumn, destinationColumn))
+              }
+
+              return prevColumns
+            }))
+          .catch(error => setError(error))
   }
 
   return (
     <>
       <KanbanNavbar onCreate={setColumns} />
 
+      {error && <KanbanError onClose={() => setError(null)}>{error.message}</KanbanError>}
+
       <DragDropContext onDragEnd={onDragEnd}>
         <div className={cn(styles.kanbanWrapper)}>
           {columns.map((column) => (
             <KanbanColumn key={column.id} column={column} isLoading={isLoading} onChange={setColumns} />
           ))}
+
         </div>
       </DragDropContext>
     </>

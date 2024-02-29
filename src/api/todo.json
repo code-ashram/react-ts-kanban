@@ -25,7 +25,7 @@
       "creationTime": "2024-01-04T20:19:00.000Z",
       "priority": "High",
       "order": 6,
-      "status": 1
+      "status": 0
     },
     {
       "id": "8",
@@ -79,7 +79,7 @@
       "creationTime": "2023-12-29T18:17:00.000Z",
       "priority": "Mid",
       "order": 4,
-      "status": 1
+      "status": 0
     },
     {
       "id": "15",
@@ -88,7 +88,7 @@
       "creationTime": "2024-01-03T19:48:00.000Z",
       "priority": "Mid",
       "order": 5,
-      "status": 0
+      "status": 1
     },
     {
       "id": "16",
